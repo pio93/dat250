@@ -17,7 +17,6 @@ class User(UserMixin,db.Model):
    movie = db.Column(db.String(20))
    nationality = db.Column(db.String(20))
    birthday = db.Column(db.String(20))
-   #posts = db.relation('Post', backref = 'user')
   
    def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -32,12 +31,6 @@ class Post(db.Model):
     content = db.Column(db.String(100))
     image = db.Column(db.String(20))
     creation_time = db.Column(db.DateTime())
-
-
-
-#class Friend(db.Model):
- #   u_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key = True)
-  #  f_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key = True)
 
 class Friend(db.Model):
     u_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
@@ -60,6 +53,5 @@ def user_loader(user_id):
 
 @login.unauthorized_handler
 def unauthorized():
-    """Redirect unauthorized users to Login page."""
     flash('Unauthorized login')
     return redirect(url_for('index'))

@@ -28,10 +28,10 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">{{post[1].content}}</p>
-                    {% if post.image %}
-                    <img src="{{'/static/uploads/' + post.image}}" class="card-img-bottom">
+                    {% if post[1].image %}
+                    <img src="{{'/static/uploads/' + post[1].image}}" class="card-img-bottom">
                     {% endif %}
-                    <a href={{ url_for('comments', username=username, p_id=post[1].id) }}><span class="fa fa-comment"></span>&nbsp;Comments({{post.cc}})</a>
+                    <a href={{ url_for('comments', username=username, p_id=post[1].id) }}><span class="fa fa-comment"></span>&nbsp;Comments({{post[2]}})</a>
                 </div>
             </div>
         </div>
