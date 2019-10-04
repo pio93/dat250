@@ -15,12 +15,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class RegisterForm(FlaskForm):
-    first_name = StringField('First Name', render_kw={'placeholder': 'First Name'}, validators=[InputRequired('First name required.'), Length])
+    first_name = StringField('First Name', render_kw={'placeholder': 'First Name'}, validators=[InputRequired('First name required.'), Length(min=1, max=64)])
     last_name = StringField('Last Name', render_kw={'placeholder': 'Last Name'}, validators=[InputRequired('Last name required.')])
     username = StringField('Username', render_kw={'placeholder': 'Username'}, validators=[InputRequired('Username required'),
     Length(min=2, message='Username must be atleast 3 characters long')]) 
     password = PasswordField('Password', render_kw={'placeholder': 'Password'}, validators=[InputRequired('Password required.'), 
-    Length(min=2, message='Password must be at least 8 characters long.')])
+    Length(min=8, message='Password must be at least 8 characters long.')])
     confirm_password = PasswordField('Confirm Password', render_kw={'placeholder': 'Confirm Password'}, validators=[InputRequired('Password confirmation required.'),
     EqualTo('password', message='Passwords must match.')])
     submit = SubmitField('Sign Up')
