@@ -13,6 +13,8 @@ import os
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    if current_user.is_authenticated:
+        redirect(url_for('stream', username=current_user.username))
     form = IndexForm()
     form.register = RegisterForm()
 
@@ -106,7 +108,7 @@ def friends(username):
     form = FriendsForm()
     
     user = User.query.filter_by(username = username).first()
-    if form.is_submitted():
+    if username == current_user.username and form.is_submitted():
     
         friend = User.query.filter_by(username = form.username.data).first()
         if friend is None:
