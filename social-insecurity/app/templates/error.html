@@ -1,0 +1,100 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<style>
+    @import url("http://fonts.googleapis.com/css?family=Montserrat");
+    div.black {;
+        width: 100%;
+        height: 100%;
+        background-color: #161616;
+        position: absolute;
+    }
+
+    div.white {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        position: absolute;
+        z-index: 1;
+        transition: 1.2s;
+    }
+
+    .white.fade {
+        border-radius: 50%;
+        transform: scaleX(0.5) scaleY(0);
+
+    }
+
+    div.error {
+        position: absolute;
+        margin: auto;
+        border-radius: 50%;
+        color: #161616;
+        transition: 0.75s ease-in 0.25s;
+    }
+
+    .error.show {
+        font-family: "Montserrat";
+        font-size: 60px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 500px;
+        height: 500px;
+        background-color: #f75022;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        text-align: center;
+        vertical-align: middle;
+        line-height: 500px;
+    }
+
+    .show:hover {
+        background-color: #c6443e;
+        width: 550px;
+        height: 550px;
+    }
+
+    .show p {
+        position: relative;
+        top: 25%;
+        line-height: normal;
+        vertical-align: middle;
+    }
+
+    .show p span {
+        font-size: 20px;
+    }
+
+    .show p span i {
+        padding-top: 15px;
+        font-size: 15px;
+    }
+
+</style>
+
+<div class="black">
+
+</div>
+
+<!--<div class="white">
+
+</div>-->
+
+<a href="{{ url_for('index') }}"><div class="error">
+    <p>{{ error_type }}<br>
+        <span>{{ error_message }}</span><br>
+        <span><i>click me to go home</i></span>
+    </p>
+</div></a>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('.error').addClass('show');
+
+        $('.white').addClass('fade');
+
+    });
+</script>

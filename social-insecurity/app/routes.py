@@ -85,7 +85,8 @@ def comments(username, p_id):
         db.session.commit()
 
     post = Post.query.filter_by(id = p_id).first()
-   
+    if not post:
+        return error()
     all_comments = db.session.query(Comment, User, Post).join(User, User.id == Comment.u_id).join(Post, Post.id == Comment.u_id).filter(Comment.p_id == post.id).all()
     return render_template('comments.html', title='Comments', username=username, form=form, post=post, comments=all_comments)
 
@@ -126,7 +127,9 @@ def profile(username):
        owner = False
 
     user = User.query.filter_by(username = username).first()
-    if form.is_submitted():
+    if not user:
+        return error()
+    if username == current_user.username and form.is_submitted():
         user.education = form.education.data
         user.employment = form.employment.data
         user.music = form.music.data
@@ -146,3 +149,11 @@ def profile(username):
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return error()
+
+
+def error(error_message="Page not found", error_type=404):
+    return render_template('error.html', error_message=error_message, error_type=error_type)
