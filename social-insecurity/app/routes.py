@@ -48,15 +48,21 @@ def stream(username):
   
     user = User.query.filter_by(username = username).first()
     if form.is_submitted():
+        validInput = True
         if form.image.data:
-            path = os.path.join(app.config['UPLOAD_PATH'], form.image.data.filename)
-            form.image.data.save(path)
-
-
-       
-        post = Post(u_id = user.id, content=form.content.data, image=form.image.data.filename, creation_time=datetime.now())
-        db.session.add(post)
-        db.session.commit()
+            extension = os.path.splitext(form.image.data.filename) #Gets the uploaded file's extension
+            extension = extension[1].lower()
+            if extension in app.config['ALLOWED_EXTENSIONS']: #Checks if the file extension is in the whitelist, returns true if it is
+                path = os.path.join(app.config['UPLOAD_PATH'], form.image.data.filename)
+                form.image.data.save(path)
+            else:
+                validInput = False
+                flash("Invalid file extension")
+        
+        if validInput:
+            post = Post(u_id = user.id, content=form.content.data, image=form.image.data.filename, creation_time=datetime.now())
+            db.session.add(post)
+            db.session.commit()
         
         return redirect(url_for('stream', username=username))
 
@@ -108,7 +114,7 @@ def friends(username):
         else:
             friend = Friend(u_id = user.id, f_id = friend.id)
             db.session.add(friend)
-            db.session.commit
+            db.session.commit()
     
    
     friends = db.session.query(User, Friend).join(Friend, User.id == Friend.u_id).filter(User.id == Friend.u_id).filter(user.id != Friend.f_id).all()
