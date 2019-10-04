@@ -1,0 +1,416 @@
+{
+  "summary": {
+    "title": "DAT250"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Data Flow Diagram",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0,
+        "$$hashKey": "object:26",
+        "diagramJson": {
+          "cells": [
+            {
+              "type": "tm.Actor",
+              "size": {
+                "width": 160,
+                "height": 80
+              },
+              "position": {
+                "x": 246,
+                "y": 78
+              },
+              "angle": 0,
+              "id": "964dc1ed-7d47-4d45-8ff2-83b84c3ac545",
+              "z": 1,
+              "hasOpenThreats": true,
+              "outOfScope": false,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Low",
+                  "title": "Authentication",
+                  "type": "Spoofing",
+                  "$$hashKey": "object:109",
+                  "description": "An attacker who gets access to  the website through a users credentials."
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Browser"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Store",
+              "size": {
+                "width": 160,
+                "height": 80
+              },
+              "position": {
+                "x": 678,
+                "y": 512
+              },
+              "angle": 0,
+              "id": "6bda30c4-06cc-476c-ba92-a63c49574737",
+              "z": 2,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "Low",
+                  "type": "Tampering",
+                  "title": "Injection",
+                  "description": "Editing, deleting and adding to any of the tables.",
+                  "mitigation": "Only using hardcoded SQL statements within the code. Make all entry points where the user can enter some text type-safe.",
+                  "$$hashKey": "object:124"
+                },
+                {
+                  "status": "Open",
+                  "severity": "High",
+                  "type": "Information disclosure",
+                  "title": "Sensitive Data Exposure",
+                  "$$hashKey": "object:188",
+                  "description": "Confidentiality",
+                  "mitigation": "Encryption"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Database"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Process",
+              "size": {
+                "width": 100,
+                "height": 100
+              },
+              "position": {
+                "x": 451,
+                "y": 301
+              },
+              "angle": 0,
+              "id": "cf11a69d-7809-453e-8d0e-18d7d8072678",
+              "z": 3,
+              "hasOpenThreats": true,
+              "threats": [
+                {
+                  "status": "Open",
+                  "severity": "High",
+                  "title": "Injection point",
+                  "type": "Tampering",
+                  "description": "Integrity",
+                  "$$hashKey": "object:256"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "type": "Denial of service",
+                  "title": "DDoS",
+                  "$$hashKey": "object:203"
+                },
+                {
+                  "status": "Open",
+                  "severity": "Medium",
+                  "title": "Broken Authentication",
+                  "type": "Tampering",
+                  "$$hashKey": "object:233"
+                }
+              ],
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Web\napplication"
+                },
+                ".element-text": {
+                  "class": "element-text hasOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Store",
+              "size": {
+                "width": 160,
+                "height": 80
+              },
+              "position": {
+                "x": 236,
+                "y": 538
+              },
+              "angle": 0,
+              "id": "b02e70da-6406-4e51-8a47-28350003d8e7",
+              "z": 4,
+              "hasOpenThreats": false,
+              "attrs": {
+                ".element-shape": {
+                  "class": "element-shape hasNoOpenThreats isInScope"
+                },
+                "text": {
+                  "text": "Config"
+                },
+                ".element-text": {
+                  "class": "element-text hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "smooth": true,
+              "source": {
+                "id": "964dc1ed-7d47-4d45-8ff2-83b84c3ac545"
+              },
+              "target": {
+                "id": "cf11a69d-7809-453e-8d0e-18d7d8072678"
+              },
+              "vertices": [
+                {
+                  "x": 467,
+                  "y": 204
+                }
+              ],
+              "id": "ec394804-5021-444c-a636-8e27e2166b6c",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Request",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 5,
+              "hasOpenThreats": false,
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "smooth": true,
+              "source": {
+                "id": "cf11a69d-7809-453e-8d0e-18d7d8072678"
+              },
+              "target": {
+                "id": "964dc1ed-7d47-4d45-8ff2-83b84c3ac545"
+              },
+              "vertices": [
+                {
+                  "x": 353,
+                  "y": 255
+                }
+              ],
+              "id": "8f78339e-93cc-4e88-b7b1-e65cc62bbbb6",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Response",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 6,
+              "hasOpenThreats": false,
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Boundary",
+              "smooth": true,
+              "source": {
+                "x": 524,
+                "y": 220
+              },
+              "target": {
+                "x": 299,
+                "y": 350
+              },
+              "vertices": [
+                {
+                  "x": 398,
+                  "y": 263
+                }
+              ],
+              "id": "cf331975-7703-4d20-bd9c-171568679c70",
+              "z": 7,
+              "attrs": {}
+            },
+            {
+              "type": "tm.Flow",
+              "smooth": true,
+              "source": {
+                "id": "cf11a69d-7809-453e-8d0e-18d7d8072678"
+              },
+              "target": {
+                "id": "6bda30c4-06cc-476c-ba92-a63c49574737"
+              },
+              "vertices": [
+                {
+                  "x": 668,
+                  "y": 414
+                }
+              ],
+              "id": "9fb5f654-43f7-45d9-b8ad-6720bfe063b0",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Query",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 8,
+              "hasOpenThreats": false,
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "smooth": true,
+              "source": {
+                "id": "cf11a69d-7809-453e-8d0e-18d7d8072678"
+              },
+              "target": {
+                "id": "6bda30c4-06cc-476c-ba92-a63c49574737"
+              },
+              "vertices": [
+                {
+                  "x": 545,
+                  "y": 506
+                }
+              ],
+              "id": "2042740a-dd09-4adf-bff3-79c9a63a92ac",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Result",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 9,
+              "hasOpenThreats": false,
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isInScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Flow",
+              "smooth": true,
+              "source": {
+                "id": "b02e70da-6406-4e51-8a47-28350003d8e7"
+              },
+              "target": {
+                "id": "cf11a69d-7809-453e-8d0e-18d7d8072678"
+              },
+              "vertices": [],
+              "id": "ed371ba7-a977-401d-873e-0bc75afa6db5",
+              "labels": [
+                {
+                  "position": 0.5,
+                  "attrs": {
+                    "text": {
+                      "text": "Reads config",
+                      "font-weight": "400",
+                      "font-size": "small"
+                    }
+                  }
+                }
+              ],
+              "z": 10,
+              "hasOpenThreats": false,
+              "outOfScope": true,
+              "attrs": {
+                ".marker-target": {
+                  "class": "marker-target hasNoOpenThreats isInScope"
+                },
+                ".connection": {
+                  "class": "connection hasNoOpenThreats isOutOfScope"
+                }
+              }
+            },
+            {
+              "type": "tm.Boundary",
+              "smooth": true,
+              "source": {
+                "x": 548,
+                "y": 609
+              },
+              "target": {
+                "x": 833,
+                "y": 394
+              },
+              "vertices": [
+                {
+                  "x": 653,
+                  "y": 479
+                }
+              ],
+              "id": "21f3f513-fec1-4585-a90c-6c6c26aa23d2",
+              "z": 11,
+              "attrs": {}
+            }
+          ]
+        },
+        "size": {
+          "height": 590,
+          "width": 1463.4000244140625
+        }
+      }
+    ]
+  }
+}
