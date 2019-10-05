@@ -68,9 +68,12 @@ def stream(username):
         
         return redirect(url_for('stream', username=username))
 
-    
+    friends = db.session.query(Friend).filter(user.id == Friend.u_id).all()
     posts_f = db.session.query(User, Post).join(Post).filter(Post.u_id == user.id).all()
     posts = []
+    for friend in friends:
+        friend_post = db.session.query(User,Post).join(Post).filter(Post.u_id == friend.f_id).first()
+        posts_f.append(friend_post)
     for post_f in posts_f:
         post = post_f + (db.session.query(Comment).filter(post_f[1].id == Comment.p_id).count(),)
         posts.append(post)
@@ -95,7 +98,7 @@ def comments(username, p_id):
     post = Post.query.filter_by(id = p_id).first()
     if not post:
         return error()
-    all_comments = db.session.query(Comment, User, Post).join(User, User.id == Comment.u_id).join(Post, Post.id == Comment.u_id).filter(Comment.p_id == post.id).all()
+    all_comments = db.session.query(Comment, User, Post).join(User, User.id == Comment.u_id).join(Post, Post.id == Comment.p_id).filter(Comment.p_id == post.id).all()
     return render_template('comments.html', title='Comments', username=username, form=form, post=post, comments=all_comments)
 
 # page for seeing and adding friends
