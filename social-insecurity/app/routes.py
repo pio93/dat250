@@ -26,7 +26,7 @@ def index():
         else:
             flash('Invalid username or password!')
 
-    elif form.register.is_submitted() and form.register.submit.data and form.register.validate():
+    elif form.register.is_submitted() and form.register.submit.data and form.validate_on_submit():#endre til form.validate_on_submit()
 
         user = User(username=form.register.username.data, first_name=form.register.first_name.data, 
         last_name=form.register.last_name.data)
