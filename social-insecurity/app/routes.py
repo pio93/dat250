@@ -14,12 +14,12 @@ import os
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        redirect(url_for('stream', username=current_user.username))
+       return redirect(url_for('stream', username=current_user.username))
     form = IndexForm()
+    form.register = RegisterForm()
 
-    if form.login.validate_on_submit():##########
+    if form.login.is_submitted() and form.login.submit.data:
         user = User.query.filter_by(username = form.login.username.data).first()
-        print("Login")
         if user == None or form.login.username.data == '':
             flash('Invalid username or password!')
         elif user.check_password(form.login.password.data):
@@ -28,8 +28,7 @@ def index():
         else:
             flash('Invalid username or password!')
 
-    elif form.register.validate_on_submit():#form.register.validate()
-        print("Register")
+    elif form.register.is_submitted() and form.register.submit.data and form.register.validate():
 
         user = User(username=form.register.username.data, first_name=form.register.first_name.data, 
         last_name=form.register.last_name.data)
@@ -50,7 +49,7 @@ def stream(username):
     form = PostForm()
   
     user = User.query.filter_by(username = username).first()
-    if form.validate_on_submit():###########################
+    if form.is_submitted():
         validInput = True
         if form.image.data:
             extension = os.path.splitext(form.image.data.filename) #Gets the uploaded file's extension
@@ -92,7 +91,7 @@ def comments(username, p_id):
 
     user = User.query.filter_by(username = username).first()
     form = CommentsForm()
-    if form.validate_on_submit():############################
+    if form.is_submitted():
        
 
         comment = Comment(p_id=p_id, u_id=user.id, comment = form.comment.data, creation_time = datetime.now())
@@ -116,11 +115,22 @@ def friends(username):
     form = FriendsForm()
     
     user = User.query.filter_by(username = username).first()
-    if form.validate_on_submit():#############################
-    
+    if username == current_user.username and form.is_submitted():
+        friends = db.session.query(Friend).filter(user.id == Friend.u_id).filter(user.id != Friend.f_id).all()
+        
         friend = User.query.filter_by(username = form.username.data).first()
+        allrd = False
+        for f in friends:
+           if friend is not None:
+              if f.f_id == friend.id:
+                  allrd = True
+                
         if friend is None:
             flash('User does not exist')
+        elif friend.id == user.id:
+            flash('You cant add yourself')
+        elif allrd == True:
+            flash("User is already added")
         else:
             friend = Friend(u_id = user.id, f_id = friend.id)
             db.session.add(friend)
@@ -145,7 +155,7 @@ def profile(username):
     user = User.query.filter_by(username = username).first()
     if not user:
         return error()
-    if username == current_user.username and form.validate_on_submit():###########################
+    if username == current_user.username and form.is_submitted():
         user.education = form.education.data
         user.employment = form.employment.data
         user.music = form.music.data
