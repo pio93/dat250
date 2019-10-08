@@ -14,10 +14,10 @@ import os
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     form = IndexForm()
-    form.register = RegisterForm()
 
-    if form.login.is_submitted() and form.login.submit.data:
+    if form.login.validate_on_submit():##########
         user = User.query.filter_by(username = form.login.username.data).first()
+        print("Login")
         if user == None or form.login.username.data == '':
             flash('Invalid username or password!')
         elif user.check_password(form.login.password.data):
@@ -26,7 +26,8 @@ def index():
         else:
             flash('Invalid username or password!')
 
-    elif form.register.is_submitted() and form.register.submit.data and form.validate_on_submit():#endre til form.validate_on_submit()
+    elif form.register.validate_on_submit():#form.register.validate()
+        print("Register")
 
         user = User(username=form.register.username.data, first_name=form.register.first_name.data, 
         last_name=form.register.last_name.data)
@@ -47,7 +48,7 @@ def stream(username):
     form = PostForm()
   
     user = User.query.filter_by(username = username).first()
-    if form.is_submitted():
+    if form.validate_on_submit():###########################
         validInput = True
         if form.image.data:
             extension = os.path.splitext(form.image.data.filename) #Gets the uploaded file's extension
@@ -83,7 +84,7 @@ def comments(username, p_id):
 
     user = User.query.filter_by(username = username).first()
     form = CommentsForm()
-    if form.is_submitted():
+    if form.validate_on_submit():############################
        
 
         comment = Comment(p_id=p_id, u_id=user.id, comment = form.comment.data, creation_time = datetime.now())
@@ -106,7 +107,7 @@ def friends(username):
     form = FriendsForm()
     
     user = User.query.filter_by(username = username).first()
-    if form.is_submitted():
+    if form.validate_on_submit():#############################
     
         friend = User.query.filter_by(username = form.username.data).first()
         if friend is None:
@@ -135,7 +136,7 @@ def profile(username):
     user = User.query.filter_by(username = username).first()
     if not user:
         return error()
-    if username == current_user.username and form.is_submitted():
+    if username == current_user.username and form.validate_on_submit():###########################
         user.education = form.education.data
         user.employment = form.employment.data
         user.music = form.music.data
