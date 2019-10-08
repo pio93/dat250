@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="card-text">About {{username}}</h1>
-                    {% if owner == True %}
+                    {% if owner %}
                     <button type="button" class="btn btn-link" id="edit-button"><span class="fa fa-edit"></span>&nbsp;Edit</button>
                     {% endif %}
                     <!--View details-->
@@ -57,6 +57,7 @@
                             </li>
                         </ul>
                     </div>
+                    {% if owner %}
                     <!--Edit details-->
                     <div id="edit-details" style="display: none;">
                         <form action="" method="POST" novalidate>
@@ -70,6 +71,7 @@
                             {{ wtf.form_field(form.submit, class="btn btn-primary") }}
                         </form>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

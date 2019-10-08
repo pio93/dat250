@@ -13,6 +13,8 @@ import os
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
+    if current_user.is_authenticated:
+        redirect(url_for('stream', username=current_user.username))
     form = IndexForm()
 
     if form.login.validate_on_submit():##########
@@ -67,12 +69,18 @@ def stream(username):
         
         return redirect(url_for('stream', username=username))
 
-    
+    friends = db.session.query(Friend).filter(user.id == Friend.u_id).all()
     posts_f = db.session.query(User, Post).join(Post).filter(Post.u_id == user.id).all()
     posts = []
+    for friend in friends:
+        friend_posts = db.session.query(User,Post).join(Post).filter(Post.u_id == friend.f_id).all()
+        for friend_post in friend_posts:
+            posts_f.append(friend_post)
     for post_f in posts_f:
-        post = post_f + (db.session.query(Comment).filter(post_f[1].id == Comment.p_id).count(),)
-        posts.append(post)
+        if post_f != None:
+            post = post_f + (db.session.query(Comment).filter(post_f[1].id == Comment.p_id).count(),)
+            posts.append(post)
+    posts.sort(key=sortPosts, reverse=True)
     return render_template('stream.html', title='Stream', username=username, form=form, posts=posts)
 
 # comment page for a given post and user.
@@ -94,7 +102,8 @@ def comments(username, p_id):
     post = Post.query.filter_by(id = p_id).first()
     if not post:
         return error()
-    all_comments = db.session.query(Comment, User, Post).join(User, User.id == Comment.u_id).join(Post, Post.id == Comment.u_id).filter(Comment.p_id == post.id).all()
+    all_comments = db.session.query(Comment, User, Post).join(User, User.id == Comment.u_id).join(Post, Post.id == Comment.p_id).filter(Comment.p_id == post.id).all()
+    all_comments.sort(key=sortComments, reverse=True)
     return render_template('comments.html', title='Comments', username=username, form=form, post=post, comments=all_comments)
 
 # page for seeing and adding friends
@@ -118,7 +127,7 @@ def friends(username):
             db.session.commit()
     
    
-    friends = db.session.query(User, Friend).join(Friend, User.id == Friend.u_id).filter(User.id == Friend.u_id).filter(user.id != Friend.f_id).all()
+    friends = db.session.query(User, Friend).join(Friend, User.id == Friend.u_id).filter(user.id == Friend.u_id).filter(user.id != Friend.f_id).all()
     all_friends = []
     for friend in friends: 
         all_friends.append(User.query.filter(User.id == friend[1].f_id).first())
@@ -164,3 +173,9 @@ def page_not_found(e):
 
 def error(error_message="Page not found", error_type=404):
     return render_template('error.html', error_message=error_message, error_type=error_type)
+
+def sortPosts(obj):
+    return obj[1].creation_time
+
+def sortComments(obj):
+    return obj[0].creation_time
